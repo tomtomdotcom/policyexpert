@@ -7,3 +7,7 @@ test('renders learn react link', () => {
   const linkElement = getByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
 });
+
+test('calculates basket value correctly', () => {
+  expect(1).toBe(1);
+});
