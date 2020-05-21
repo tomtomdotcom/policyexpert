@@ -140,10 +140,6 @@ class Cart extends React.Component<{}, State> {
     
 
     calculatePrices() {
-        console.log({
-            cokes: this.state.items.countCokes,
-            beans: this.state.items.countBeans
-        })
         // Calculate Total Value
         const totalBeans = this.state.items.countBeans * VALUES.beans;
         const totalCokes = this.state.items.countCokes * VALUES.coke;
@@ -182,6 +178,7 @@ class Cart extends React.Component<{}, State> {
             beansSavings = totalBeans - beansTotalWithSavings;
         }
 
+        // Calculate Subtotal
         const totalSavings = cokeSavings + beansSavings;
         const subtotal = total - totalSavings;
 
