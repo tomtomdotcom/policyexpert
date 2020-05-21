@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
+import Cart from './components/Cart/cart';
 
 function App() {
   return (
     <div className="App">
-      <p>Policy Expert Tech Test.</p>
+        <Cart/>
     </div>
   );
 }
