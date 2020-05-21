@@ -1,8 +1,16 @@
 import React from "react";
 interface State {
     shoppingItems: String[],
-    items: any
-    pricing: any
+    items: {
+        countBeans: number,
+        countCokes: number,
+        countOranges: number
+    }
+    pricing: {
+        savings: number,
+        subtotal: number,
+        total: number
+    }
 }
 
 const VALUES = {
@@ -28,6 +36,7 @@ class Cart extends React.Component<{}, State> {
         };
         this.addItem = this.addItem.bind(this);
         this.calculatePrices = this.calculatePrices.bind(this);
+        this.removeItem = this.removeItem.bind(this);
     }
 
     addItem(item: String): any {
@@ -73,6 +82,62 @@ class Cart extends React.Component<{}, State> {
         }
         return '';
     }
+
+
+    removeItem(item: any): any {
+        switch(item.currentTarget.value){
+            case "Beans":
+                if (this.state.items.countBeans === 0) {
+                    break;
+                }
+                this.setState({
+                    items: {
+                        countBeans: this.state.items.countBeans - 1,
+                        countCokes: this.state.items.countCokes,
+                        countOranges: this.state.items.countOranges
+                    }
+                }, () => {
+                    this.calculatePrices();
+                  });
+                break;
+
+            case "Cokes":
+                if (this.state.items.countCokes === 0) {
+                    break;
+                }
+                this.setState({
+                    items: {
+                        countBeans: this.state.items.countBeans,
+                        countCokes: this.state.items.countCokes - 1,
+                        countOranges: this.state.items.countOranges
+                    }
+                }, () => {
+                    this.calculatePrices();
+                  });
+                break;
+
+            case "Oranges":
+                if (this.state.items.countOranges === 0) {
+                    break;
+                }
+                this.setState({
+                    items: {
+                        countBeans: this.state.items.countBeans,
+                        countCokes: this.state.items.countCokes,
+                        countOranges: this.state.items.countOranges - 1
+                    }
+                }, () => {
+                    this.calculatePrices();
+                  });
+                break;
+            default:
+                console.log('Unknown item, should throw an error');
+                break;
+        }
+        return '';
+    }
+
+    
 
     calculatePrices() {
         console.log({
@@ -122,9 +187,9 @@ class Cart extends React.Component<{}, State> {
 
         this.setState({
             pricing: {
-                total: total.toFixed(2),
-                savings: totalSavings.toFixed(2),
-                subtotal: subtotal.toFixed(2)
+                total: Number(total.toFixed(2)),
+                savings: Number(totalSavings.toFixed(2)),
+                subtotal: Number(subtotal.toFixed(2))
             }
         })
     }
@@ -143,11 +208,11 @@ render() {
           </div>
           <div className="col-sm">
            <h3>Basket</h3>
-           <p>Below is your selection of items</p>
+           <p>Below is your selection of items, click to remove an item</p>
            <div className="list-group">
-            <li className="list-group-item">Beans: {this.state.items.countBeans}</li>
-            <li className="list-group-item">Cokes: {this.state.items.countCokes}</li>
-            <li className="list-group-item">Oranges: {this.state.items.countOranges}</li>
+            <button className="list-group-item list-group-item-action" value="Beans" onClick={this.removeItem}>Beans: {this.state.items.countBeans}</button>
+            <button className="list-group-item list-group-item-action" value="Cokes" onClick={this.removeItem}>Cokes: {this.state.items.countCokes}</button>
+            <button className="list-group-item list-group-item-action" value="Oranges"  onClick={this.removeItem}>Oranges: {this.state.items.countOranges}</button>
            </div>
           </div>
           <div className="col-sm">
@@ -155,7 +220,7 @@ render() {
             <p>Totals, Savings & more..</p>
             <div className="list-group">
                 <li className="list-group-item">Total: {this.state.pricing.total}£</li>
-                <li className="list-group-item">Savings: - {this.state.pricing.savings}£</li>
+                <li className="list-group-item">Savings: {this.state.pricing.savings}£</li>
                 <li className="list-group-item">Subtotal: {this.state.pricing.subtotal}£</li>
            </div>
           </div>
